@@ -24,7 +24,7 @@
 </template>
 
 <script>
-//import axios from 'axios';
+import axios from 'axios';
 export default {
   props: {
     modelValue: Boolean
@@ -57,8 +57,8 @@ export default {
     async submitForm() {
       if (this.$refs.form.validate()) {
         try {
-          //await axios.post('https://api.example.com/category/', this.category);
-          //this.close();
+          await axios.post('https://api.example.com/category/', this.category);
+          this.close();
           this.$emit('form-submitted');
         } catch (error) {
           console.error('Error al enviar el formulario:', error);
