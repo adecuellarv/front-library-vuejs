@@ -1,6 +1,6 @@
 <template>
   <v-col cols="auto" class="div-add-cat">
-    <v-btn class="text-none text-subtitle-1" color="#5865f2" size="small" variant="flat" @click="showModal(true)">
+    <v-btn class="text-none text-subtitle-1" color="#5865f2" size="small" variant="flat" @click="handleShowModal(true)">
       Agregar Categoria <v-icon dark>mdi-plus</v-icon>
     </v-btn>
   </v-col>
@@ -31,16 +31,18 @@
             </template>
           </v-data-table>
         </v-expansion-panel-content>
+        <div class="div-delete">
+          <v-btn class="text-none text-subtitle-1" color="red" size="small" variant="flat"
+            @click="handleDeleteCategory(cat.categoryId)">
+            Eliminar esta categoria <v-icon dark>mdi-delete</v-icon>
+          </v-btn>
+        </div>
       </v-expansion-panel-text>
     </v-expansion-panel>
   </v-expansion-panels>
   <template>
     <v-container>
-      <CategoryModal 
-        v-model:modelValue="modalVisible" 
-        @form-submitted="handleFormSubmitted" 
-
-      />
+      <CategoryModal v-model:modelValue="modalVisible" @form-submitted="handleFormSubmitted" />
     </v-container>
   </template>
 </template>
@@ -92,12 +94,25 @@ const headers = ref([
 
 const modalVisible = ref(false);
 
-const showModal = (value) => {
+const handleShowModal = (value) => {
   modalVisible.value = true;
 }
 
 const handleFormSubmitted = () => {
   fetchCategories();
+}
+
+const handleDeleteCategory = async (id) => {
+  try {
+    await axios.delete(`${apiBaseUrl}category/${id}`);
+    await fetchCategories();
+  } catch (error) {
+    console.error('Error al enviar el formulario:', error);
+  }
+}
+
+const onButtonClick = (item) => {
+  console.log('click on ' + item)
 }
 
 const fetchCategories = async () => {
@@ -108,10 +123,6 @@ const fetchCategories = async () => {
     console.error('Error fetching categories:', error);
   }
 };
-
-const onButtonClick = (item) => {
-  console.log('click on ' + item)
-}
 
 onMounted(() => {
   fetchCategories()
@@ -124,5 +135,10 @@ onMounted(() => {
   text-align: right;
   padding: 16px;
   margin-bottom: 20px;
+}
+
+.div-delete {
+  text-align: right;
+  padding: 20px;
 }
 </style>
