@@ -52,39 +52,9 @@ import axios from 'axios';
 import { ca } from 'vuetify/locale';
 const apiBaseUrl = 'http://localhost:25365/api/';
 
-const categories = ref([
-  {
-    "categoryId": 1,
-    "categoryGuid": "73279921-434d-4f03-8d39-289b15d350fe",
-    "categoryName": "Syfy",
-    "books": null
-  },
-  {
-    "categoryId": 2,
-    "categoryGuid": "9d7e55c5-b39d-4fb9-959a-08c5c3474911",
-    "categoryName": "Comedia",
-    "books": null
-  }
-]);
+const categories = ref([]);
 
-const items = ref([
-  {
-    "bookId": 4,
-    "bookName": "Interestelar",
-    "bookDescription": "Esta es una descripción del libro",
-    "bookImage": "https://i0.wp.com/ensedeciencia.com/wp-content/uploads/2023/05/Copia-de-EdeCiencia-Mexw-C-P-2023-05-02T210102.389.jpg?resize=800%2C451&ssl=1",
-    "bookPdf": "C:\\Users\\Usuario\\Documents\\projects\\files-exam\\catalogo_red_de_herrajes.pdf",
-    "category": 1
-  },
-  {
-    "bookId": 5,
-    "bookName": "Star Wars",
-    "bookDescription": "Esta es una descripción del libro",
-    "bookImage": "https://i.blogs.es/1da08b/1366_2000-9-/1366_2000.jpeg",
-    "bookPdf": "C:\\Users\\Usuario\\Documents\\projects\\files-exam\\catalogo_red_de_herrajes.pdf",
-    "category": 1
-  }
-]);
+const items = ref([]);
 
 const headers = ref([
   { title: 'Libro', value: 'bookName', key: 'title', },
