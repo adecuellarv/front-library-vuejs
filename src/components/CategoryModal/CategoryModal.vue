@@ -25,6 +25,7 @@
 
 <script>
 import axios from 'axios';
+const apiBaseUrl = process.env.VUE_APP_API_BASE_URL;
 export default {
   props: {
     modelValue: Boolean
@@ -57,7 +58,10 @@ export default {
     async submitForm() {
       if (this.$refs.form.validate()) {
         try {
-          await axios.post('https://api.example.com/category/', this.category);
+          const values = {
+            
+          }
+          await axios.post(`${apiBaseUrl}category/`, this.category);
           this.close();
           this.$emit('form-submitted');
         } catch (error) {
