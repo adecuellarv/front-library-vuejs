@@ -18,7 +18,7 @@
           <v-file-input label="Cargar PDF del Libro" @change="handleFileUpload('pdf', $event)"
             accept=".pdf"></v-file-input>
 
-          <v-text-field v-model="category" label="Categoría (ID)" required type="string"></v-text-field>
+          <v-text-field v-model="category" type="hidden"></v-text-field>
 
           <v-btn type="submit" color="primary">Enviar</v-btn>
         </v-form>
@@ -36,15 +36,8 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 const apiBaseUrl = 'http://localhost:25365/api/';
 export default {
-  props: {
-    catid: String,
-  },
-  data() {
-    return {
-      category: this.catid,
-    };
-  },
-  setup() {
+  props: ['catid', 'successAddBook'],
+  setup(props) {
     const bookName = ref('');
     const bookDescription = ref('');
     const bookImageFile = ref(null);
@@ -71,7 +64,7 @@ export default {
         formData.append('BookDescription', bookDescription.value);
         formData.append('BookImage', 'test');
         formData.append('BookPdf', 'test');
-        formData.append('Category', category.value); debugger
+        formData.append('Category', props?.catid);
 
         if (bookImageFile.value) {
           formData.append('BookImageFile', bookImageFile.value);
@@ -86,10 +79,13 @@ export default {
               'Content-Type': 'multipart/form-data',
             },
           });
+          props.successAddBook(props?.catid)
           console.log('Libro enviado:', response.data);
+          
         } catch (error) {
           console.error('Error al enviar el libro:', error);
         }
+        props.successAddBook(props?.catid)
       }
     };
 

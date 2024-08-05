@@ -48,7 +48,7 @@
   </template>
   <template>
     <v-container>
-      <BookModal v-model="modalAddBookVisible" :catid="catid" @form-submitted="handleFormSubmittedAddBook" />
+      <BookModal v-model="modalAddBookVisible" :catid="catid" :success-add-book="successAddBook" @form-submitted="handleFormSubmittedAddBook" />
     </v-container>
   </template>
 </template>
@@ -58,7 +58,20 @@ import axios from 'axios';
 import { ca } from 'vuetify/locale';
 const apiBaseUrl = 'http://localhost:25365/api/';
 
-const categories = ref([]);
+const categories = ref([
+  {
+    "categoryId": 1,
+    "categoryGuid": "73279921-434d-4f03-8d39-289b15d350fe",
+    "categoryName": "Syfy",
+    "books": null
+  },
+  {
+    "categoryId": 2,
+    "categoryGuid": "9d7e55c5-b39d-4fb9-959a-08c5c3474911",
+    "categoryName": "Comedia",
+    "books": null
+  }
+]);
 
 const items = ref([]);
 
@@ -89,6 +102,11 @@ const handleFormSubmitted = () => {
 
 const handleFormSubmittedAddBook = () => {
   //fetchCategories();
+}
+
+const successAddBook = (id) => {
+  modalAddBookVisible.value = false;
+  handleGetBooks(id);
 }
 
 const handleDeleteCategory = async (id) => {
