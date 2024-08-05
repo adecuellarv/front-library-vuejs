@@ -25,7 +25,8 @@
 
 <script>
 import axios from 'axios';
-const apiBaseUrl = process.env.VUE_APP_API_BASE_URL;
+import { fetchCategories } from '../Category/Category'
+const apiBaseUrl = 'http://localhost:25365/api/';
 export default {
   props: {
     modelValue: Boolean
@@ -59,9 +60,10 @@ export default {
       if (this.$refs.form.validate()) {
         try {
           const values = {
-            
+            CategoryName: this.category.name
           }
-          await axios.post(`${apiBaseUrl}category/`, this.category);
+          await axios.post(`${apiBaseUrl}category/`, values);
+          await fetchCategories();
           this.close();
           this.$emit('form-submitted');
         } catch (error) {

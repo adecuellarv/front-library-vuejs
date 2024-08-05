@@ -40,9 +40,22 @@
     </v-container>
   </template>
 </template>
+<script>
+
+import axios from 'axios';
+const apiBaseUrl = 'http://localhost:25365/api/';
+export const fetchCategories = async () => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}category/`);
+    return response?.data;
+    //categories.value = response.data;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+  }
+};
+</script>
 <script setup>
 import { ref, onMounted } from 'vue';
-
 
 
 const categories = ref([
@@ -100,18 +113,13 @@ const onButtonClick = (item) => {
   console.log('click on ' + item)
 }
 
-const fetchCategories = async () => {
-  try {
-    //const response = await axios.get('https://api.example.com/categories');
-    //categories.value = response.data;
-  } catch (error) {
-    //console.error('Error fetching categories:', error);
+onMounted(async() => {
+  const data = await fetchCategories()
+  if(data){
+    categories.value = data
   }
-};
-
-onMounted(() => {
-  fetchCategories();
 });
+
 
 </script>
 <style scoped>
