@@ -1,7 +1,9 @@
 import { ref, onMounted } from 'vue';
+import CategoryModal from '../CategoryModal/CategoryModal.vue'
 //import axios from 'axios';
 
 export default function useCategories() {
+  
   const categories = ref([
     {
       "categoryId": 1,
@@ -40,8 +42,23 @@ export default function useCategories() {
     { title: 'Libro', value: 'bookName', key: 'title', },
     { title: 'Imagen', value: 'bookImage', key: 'image', },
     { title: 'Url', value: 'bookPdf', key: 'download', },
+    { title: 'Acciones', value: 'actions', key: 'actions', },
     //{ title: 'Actions', value: 'actions', key: 'actions', sortable: false },
   ]);
+
+  const modalVisible = ref(false);
+
+  const onButtonClick = (item) => {
+    console.log('click on ' + item)
+  }
+
+  const showModal = (value) => {
+    modalVisible.value = true;
+  }
+
+  const handleFormSubmitted = () => {
+    console.log('#her')
+  }
 
   const fetchCategories = async () => {
     try {
@@ -59,6 +76,11 @@ export default function useCategories() {
   return {
     categories,
     items,
-    headers
+    headers,
+    onButtonClick,
+    CategoryModal,
+    modalVisible,
+    showModal,
+    handleFormSubmitted
   };
 }
