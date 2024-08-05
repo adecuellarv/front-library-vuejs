@@ -7,7 +7,7 @@
 
   <v-expansion-panels variant="accordion">
     <v-expansion-panel v-for="cat in categories" :key="cat.categoryId">
-      <v-expansion-panel-title>
+      <v-expansion-panel-title @click="handleGetBooks(cat.categoryId)">
         <h3>{{ cat.categoryName }}</h3>
 
       </v-expansion-panel-title>
@@ -27,7 +27,7 @@
             </template>
             <template v-slot:[`item.actions`]="{ item }">
               <v-icon dark @click="onButtonClick(item.bookId)">mdi-pencil</v-icon>
-              <v-icon dark @click="onButtonClick(item.bookId)">mdi-delete</v-icon>
+              <v-icon dark @click="handleDeleteBook(item.bookId, cat.categoryId)">mdi-delete</v-icon>
             </template>
           </v-data-table>
         </v-expansion-panel-content>
@@ -49,6 +49,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { ca } from 'vuetify/locale';
 const apiBaseUrl = 'http://localhost:25365/api/';
 
 const categories = ref([
@@ -111,8 +112,22 @@ const handleDeleteCategory = async (id) => {
   }
 }
 
-const onButtonClick = (item) => {
-  console.log('click on ' + item)
+const handleGetBooks = async (id) => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}book/${id}`);
+    items.value = response?.data;
+  } catch (error) {
+    console.error('Error al enviar el formulario:', error);
+  }
+}
+
+const handleDeleteBook = async (item, cat) => {
+  try {
+    await axios.delete(`${apiBaseUrl}book/${item}`);
+    await handleGetBooks(cat);
+  } catch (error) {
+    console.error('Error al enviar el formulario:', error);
+  }
 }
 
 const fetchCategories = async () => {
