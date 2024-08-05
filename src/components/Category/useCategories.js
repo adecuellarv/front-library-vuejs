@@ -22,7 +22,7 @@ export default function useCategories() {
       "bookId": 4,
       "bookName": "Interestelar",
       "bookDescription": "Esta es una descripción del libro",
-      "bookImage": "C:\\Users\\Usuario\\Documents\\projects\\files-exam\\1.jpg",
+      "bookImage": "https://i0.wp.com/ensedeciencia.com/wp-content/uploads/2023/05/Copia-de-EdeCiencia-Mexw-C-P-2023-05-02T210102.389.jpg?resize=800%2C451&ssl=1",
       "bookPdf": "C:\\Users\\Usuario\\Documents\\projects\\files-exam\\catalogo_red_de_herrajes.pdf",
       "category": 1
     },
@@ -30,7 +30,7 @@ export default function useCategories() {
       "bookId": 5,
       "bookName": "Star Wars",
       "bookDescription": "Esta es una descripción del libro",
-      "bookImage": "C:\\Users\\Usuario\\Documents\\projects\\files-exam\\1.jpg",
+      "bookImage": "https://i.blogs.es/1da08b/1366_2000-9-/1366_2000.jpeg",
       "bookPdf": "C:\\Users\\Usuario\\Documents\\projects\\files-exam\\catalogo_red_de_herrajes.pdf",
       "category": 1
     }
