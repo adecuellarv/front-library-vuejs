@@ -25,11 +25,11 @@
 
 <script>
 import axios from 'axios';
-import { fetchCategories } from '../Category/Category'
 const apiBaseUrl = 'http://localhost:25365/api/';
 export default {
   props: {
-    modelValue: Boolean
+    modelValue: Boolean,
+    onSubmit: Function,
   },
   emits: ['update:modelValue', 'form-submitted'],
   data() {
@@ -63,7 +63,7 @@ export default {
             CategoryName: this.category.name
           }
           await axios.post(`${apiBaseUrl}category/`, values);
-          await fetchCategories();
+          //await fetchCategories();
           this.close();
           this.$emit('form-submitted');
         } catch (error) {

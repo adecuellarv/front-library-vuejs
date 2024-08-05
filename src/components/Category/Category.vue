@@ -36,27 +36,18 @@
   </v-expansion-panels>
   <template>
     <v-container>
-      <CategoryModal v-model:modelValue="modalVisible" @form-submitted="handleFormSubmitted" />
+      <CategoryModal 
+        v-model:modelValue="modalVisible" 
+        @form-submitted="handleFormSubmitted" 
+
+      />
     </v-container>
   </template>
 </template>
-<script>
-
-import axios from 'axios';
-const apiBaseUrl = 'http://localhost:25365/api/';
-export const fetchCategories = async () => {
-  try {
-    const response = await axios.get(`${apiBaseUrl}category/`);
-    return response?.data;
-    //categories.value = response.data;
-  } catch (error) {
-    console.error('Error fetching categories:', error);
-  }
-};
-</script>
 <script setup>
 import { ref, onMounted } from 'vue';
-
+import axios from 'axios';
+const apiBaseUrl = 'http://localhost:25365/api/';
 
 const categories = ref([
   {
@@ -106,18 +97,24 @@ const showModal = (value) => {
 }
 
 const handleFormSubmitted = () => {
-  
+  fetchCategories();
 }
+
+const fetchCategories = async () => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}category/`);
+    categories.value = response.data;
+  } catch (error) {
+    console.error('Error fetching categories:', error);
+  }
+};
 
 const onButtonClick = (item) => {
   console.log('click on ' + item)
 }
 
-onMounted(async() => {
-  const data = await fetchCategories()
-  if(data){
-    categories.value = data
-  }
+onMounted(() => {
+  fetchCategories()
 });
 
 
