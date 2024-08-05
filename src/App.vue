@@ -3,8 +3,6 @@
     <v-main>
       <Category />
     </v-main>
-
-    <AppFooter />
   </v-app>
 </template>
 
