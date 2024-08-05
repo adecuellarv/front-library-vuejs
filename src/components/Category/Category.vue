@@ -12,7 +12,8 @@
 
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <v-btn class="text-none text-subtitle-1" color="#5865f2" size="small" variant="flat">
+        <v-btn class="text-none text-subtitle-1" color="#5865f2" size="small" variant="flat"
+          @click="handleShowModalAddBook(cat.categoryId)">
           Agregar libro <v-icon dark>mdi-plus</v-icon>
         </v-btn>
         <v-expansion-panel-content>
@@ -45,6 +46,11 @@
       <CategoryModal v-model:modelValue="modalVisible" @form-submitted="handleFormSubmitted" />
     </v-container>
   </template>
+  <template>
+    <v-container>
+      <BookModal v-model="modalAddBookVisible" :catid="catid" @form-submitted="handleFormSubmittedAddBook" />
+    </v-container>
+  </template>
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -64,13 +70,25 @@ const headers = ref([
 ]);
 
 const modalVisible = ref(false);
+const modalAddBookVisible = ref(false);
+const catid = ref("");
 
 const handleShowModal = (value) => {
   modalVisible.value = true;
 }
 
+const handleShowModalAddBook = (idcatparent) => {
+  modalAddBookVisible.value = true;
+}
+
+
+
 const handleFormSubmitted = () => {
   fetchCategories();
+}
+
+const handleFormSubmittedAddBook = () => {
+  //fetchCategories();
 }
 
 const handleDeleteCategory = async (id) => {
@@ -83,6 +101,7 @@ const handleDeleteCategory = async (id) => {
 }
 
 const handleGetBooks = async (id) => {
+  catid.value = id;
   try {
     const response = await axios.get(`${apiBaseUrl}book/${id}`);
     items.value = response?.data;

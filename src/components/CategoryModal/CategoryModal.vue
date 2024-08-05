@@ -16,8 +16,8 @@
       </v-card-subtitle>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" @click="submitForm">Enviar</v-btn>
         <v-btn text @click="close">Cerrar</v-btn>
+        <v-btn color="#5865f2" size="small" variant="flat" @click="submitForm">Enviar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
