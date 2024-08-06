@@ -54,7 +54,7 @@
   </template>
   <template>
     <v-container>
-      <BookModalEdit v-model="modalEditBookVisible" :objprops="objprops" :success-add-book="successAddBook"
+      <BookModalEdit v-model="modalEditBookVisible" :objprops="objprops"
         @form-submitted="handleFormSubmittedEditBook" />
     </v-container>
   </template>
@@ -80,7 +80,25 @@ const categories = ref([
   }
 ]);
 
-const items = ref([]);
+//const items = ref([]);
+const items = ref([
+  {
+    "bookId": 4,
+    "bookName": "Interestelar",
+    "bookDescription": "Esta es una descripción del libro",
+    "bookImage": "https://i0.wp.com/ensedeciencia.com/wp-content/uploads/2023/05/Copia-de-EdeCiencia-Mexw-C-P-2023-05-02T210102.389.jpg?resize=800%2C451&ssl=1",
+    "bookPdf": "C:\\Users\\Usuario\\Documents\\projects\\files-exam\\catalogo_red_de_herrajes.pdf",
+    "category": 1
+  },
+  {
+    "bookId": 5,
+    "bookName": "Star Wars",
+    "bookDescription": "Esta es una descripción del libro",
+    "bookImage": "https://i.blogs.es/1da08b/1366_2000-9-/1366_2000.jpeg",
+    "bookPdf": "C:\\Users\\Usuario\\Documents\\projects\\files-exam\\catalogo_red_de_herrajes.pdf",
+    "category": 1
+  }
+]);
 
 const headers = ref([
   { title: 'Libro', value: 'bookName', key: 'title', },
@@ -93,11 +111,8 @@ const modalVisible = ref(false);
 const modalAddBookVisible = ref(false);
 const modalEditBookVisible = ref(false);
 const catid = ref("");
-const objprops = ref({
-  bookId: null,
-  bookName: '',
-  bookDescription: ''
-},);
+const bookid = ref("");
+const objprops = ref({});
 
 const handleShowModal = (value) => {
   modalVisible.value = true;
@@ -137,7 +152,7 @@ const handleGetBooks = async (id) => {
   catid.value = id;
   try {
     const response = await axios.get(`${apiBaseUrl}book/${id}`);
-    items.value = response?.data;
+    //items.value = response?.data;
   } catch (error) {
     console.error('Error al enviar el formulario:', error);
   }
@@ -152,15 +167,17 @@ const handleDeleteBook = async (item, cat) => {
   }
 }
 
-const handleEditBook = (obj) => {
-  objprops.value = { ...obj };
-  modalEditBookVisible.value = modalEditBookVisible
+const handleEditBook = (id) => {
+  objprops.value = { ...id };
+  //bookid.value = id;
+  localStorage.setItem('bookid', bookid);
+  modalEditBookVisible.value = true
 }
 
 const fetchCategories = async () => {
   try {
     const response = await axios.get(`${apiBaseUrl}category/`);
-    categories.value = response.data;
+    //categories.value = response.data;
   } catch (error) {
     console.error('Error fetching categories:', error);
   }
