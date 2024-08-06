@@ -54,7 +54,7 @@
   </template>
   <template>
     <v-container>
-      <BookModalEdit v-model="modalEditBookVisible" :objprops="objprops"
+      <BookModalEdit v-model="modalEditBookVisible" :objprops="objprops" :success-add-book="successAddBook"
         @form-submitted="handleFormSubmittedEditBook" />
     </v-container>
   </template>
@@ -136,6 +136,7 @@ const handleFormSubmittedEditBook = () => {
 
 const successAddBook = (id) => {
   modalAddBookVisible.value = false;
+  modalEditBookVisible.value = false;
   handleGetBooks(id);
 }
 
@@ -152,7 +153,7 @@ const handleGetBooks = async (id) => {
   catid.value = id;
   try {
     const response = await axios.get(`${apiBaseUrl}book/${id}`);
-    //items.value = response?.data;
+    items.value = response?.data;
   } catch (error) {
     console.error('Error al enviar el formulario:', error);
   }
@@ -177,7 +178,7 @@ const handleEditBook = (id) => {
 const fetchCategories = async () => {
   try {
     const response = await axios.get(`${apiBaseUrl}category/`);
-    //categories.value = response.data;
+    categories.value = response.data;
   } catch (error) {
     console.error('Error fetching categories:', error);
   }

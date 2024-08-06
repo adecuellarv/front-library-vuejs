@@ -76,7 +76,8 @@ export default {
         formData.append('BookDescription', bookDescription.value);
         formData.append('BookImage', 'test');
         formData.append('BookPdf', 'test');
-        formData.append('Category', category.value);
+        formData.append('Category', category.value); 
+        console.log('#id.value', id.value)
 
         if (bookImageFile.value) {
           formData.append('BookImageFile', bookImageFile.value);
@@ -86,18 +87,17 @@ export default {
         }
 
         try {
-          const response = await axios.post('http://localhost:25365/api/book/' + id, formData, {
+          const response = await axios.put('http://localhost:25365/api/book/' + id.value, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-          props.successAddBook(props?.catid)
+          props.successAddBook(category.value)
           console.log('Libro enviado:', response.data);
           
         } catch (error) {
           console.error('Error al enviar el libro:', error);
         }
-        props.successAddBook(props?.catid)
       }
     };
 
