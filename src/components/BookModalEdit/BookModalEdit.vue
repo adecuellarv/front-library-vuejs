@@ -36,10 +36,10 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 const apiBaseUrl = 'http://localhost:25365/api/';
 export default {
-  props: ['catid', 'successAddBook'],
-  setup(props) {
-    const bookName = ref('');
-    const bookDescription = ref('');
+  props: ['objprops', 'successAddBook'],
+  setup(props) { console.log('#props', props, props?.objprops)
+    const bookName = ref(props?.objprops?.bookName);
+    const bookDescription = ref(props?.objprops?.bookDescription);
     const bookImageFile = ref(null);
     const bookPdfFile = ref(null);
     const valid = ref(false);
@@ -60,11 +60,11 @@ export default {
     const submitForm = async () => {
       if (valid.value) {
         const formData = new FormData();
-        formData.append('BookName', bookName.value);
-        formData.append('BookDescription', bookDescription.value);
+        formData.append('BookName', props?.objprops?.bookName);
+        formData.append('BookDescription', props?.objprops?.bookDescription);
         formData.append('BookImage', 'test');
         formData.append('BookPdf', 'test');
-        formData.append('Category', props?.catid);
+        formData.append('Category', props?.objprops?.category);
 
         if (bookImageFile.value) {
           formData.append('BookImageFile', bookImageFile.value);
@@ -72,9 +72,10 @@ export default {
         if (bookPdfFile.value) {
           formData.append('BookPdfFile', bookPdfFile.value);
         }
-
+        console.log('#props?.objprops?.bookId', props?.objprops?.bookId)
+        debugger
         try {
-          const response = await axios.post('http://localhost:25365/api/book', formData, {
+          const response = await axios.put(`http://localhost:25365/api/book/`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },

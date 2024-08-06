@@ -27,8 +27,7 @@
               </v-btn>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-              <v-icon dark
-                @click="handleEditBook({ bookId: item.bookId, bookName: item.bookName, bookDescription: item.bookDescription, category: item.category })">mdi-pencil</v-icon>
+              <v-icon dark @click="handleEditBook(item)">mdi-pencil</v-icon>
               <v-icon dark @click="handleDeleteBook(item.bookId, cat.categoryId)">mdi-delete</v-icon>
             </template>
           </v-data-table>
@@ -55,7 +54,8 @@
   </template>
   <template>
     <v-container>
-      <BookModalEdit v-model="modalEditBookVisible" :objprops="itemsItem" :success-add-book="successAddBook" @form-submitted="handleFormSubmittedEditBook" />
+      <BookModalEdit v-model="modalEditBookVisible" :objprops="objprops" :success-add-book="successAddBook"
+        @form-submitted="handleFormSubmittedEditBook" />
     </v-container>
   </template>
 </template>
@@ -92,7 +92,12 @@ const headers = ref([
 const modalVisible = ref(false);
 const modalAddBookVisible = ref(false);
 const modalEditBookVisible = ref(false);
-const itemsItem = ref({});
+const catid = ref("");
+const objprops = ref({
+  bookId: null,
+  bookName: '',
+  bookDescription: ''
+},);
 
 const handleShowModal = (value) => {
   modalVisible.value = true;
@@ -148,7 +153,8 @@ const handleDeleteBook = async (item, cat) => {
 }
 
 const handleEditBook = (obj) => {
-  itemsItem.value = obj
+  objprops.value = { ...obj };
+  modalEditBookVisible.value = modalEditBookVisible
 }
 
 const fetchCategories = async () => {
