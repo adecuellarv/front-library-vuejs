@@ -87,7 +87,7 @@ export default {
         }
 
         try {
-          const response = await axios.put('http://localhost:25365/api/book/' + id.value, formData, {
+          const response = await axios.put(apiBaseUrl + id.value, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
