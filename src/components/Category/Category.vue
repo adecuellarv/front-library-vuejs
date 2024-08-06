@@ -27,7 +27,8 @@
               </v-btn>
             </template>
             <template v-slot:[`item.actions`]="{ item }">
-              <v-icon dark @click="onButtonClick(item.bookId)">mdi-pencil</v-icon>
+              <v-icon dark
+                @click="handleEditBook({ bookId: item.bookId, bookName: item.bookName, bookDescription: item.bookDescription, category: item.category })">mdi-pencil</v-icon>
               <v-icon dark @click="handleDeleteBook(item.bookId, cat.categoryId)">mdi-delete</v-icon>
             </template>
           </v-data-table>
@@ -48,7 +49,13 @@
   </template>
   <template>
     <v-container>
-      <BookModal v-model="modalAddBookVisible" :catid="catid" :success-add-book="successAddBook" @form-submitted="handleFormSubmittedAddBook" />
+      <BookModal v-model="modalAddBookVisible" :catid="catid" :success-add-book="successAddBook"
+        @form-submitted="handleFormSubmittedAddBook" />
+    </v-container>
+  </template>
+  <template>
+    <v-container>
+      <BookModalEdit v-model="modalEditBookVisible" :objprops="itemsItem" :success-add-book="successAddBook" @form-submitted="handleFormSubmittedEditBook" />
     </v-container>
   </template>
 </template>
@@ -84,7 +91,8 @@ const headers = ref([
 
 const modalVisible = ref(false);
 const modalAddBookVisible = ref(false);
-const catid = ref("");
+const modalEditBookVisible = ref(false);
+const itemsItem = ref({});
 
 const handleShowModal = (value) => {
   modalVisible.value = true;
@@ -94,14 +102,16 @@ const handleShowModalAddBook = (idcatparent) => {
   modalAddBookVisible.value = true;
 }
 
-
-
 const handleFormSubmitted = () => {
   fetchCategories();
 }
 
 const handleFormSubmittedAddBook = () => {
   //fetchCategories();
+}
+
+const handleFormSubmittedEditBook = () => {
+
 }
 
 const successAddBook = (id) => {
@@ -135,6 +145,10 @@ const handleDeleteBook = async (item, cat) => {
   } catch (error) {
     console.error('Error al enviar el formulario:', error);
   }
+}
+
+const handleEditBook = (obj) => {
+  itemsItem.value = obj
 }
 
 const fetchCategories = async () => {

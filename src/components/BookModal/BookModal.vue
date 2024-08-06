@@ -36,7 +36,7 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 const apiBaseUrl = 'http://localhost:25365/api/';
 export default {
-  props: ['catid', 'successAddBook'],
+  props: ['objprops', 'successAddBook'],
   setup(props) {
     const bookName = ref('');
     const bookDescription = ref('');
@@ -60,11 +60,11 @@ export default {
     const submitForm = async () => {
       if (valid.value) {
         const formData = new FormData();
-        formData.append('BookName', bookName.value);
-        formData.append('BookDescription', bookDescription.value);
+        formData.append('BookName', props?.objprops?.bookName);
+        formData.append('BookDescription', props?.objprops?.bookDescription);
         formData.append('BookImage', 'test');
         formData.append('BookPdf', 'test');
-        formData.append('Category', props?.catid);
+        formData.append('Category', props?.objprops?.category); debugger
 
         if (bookImageFile.value) {
           formData.append('BookImageFile', bookImageFile.value);
