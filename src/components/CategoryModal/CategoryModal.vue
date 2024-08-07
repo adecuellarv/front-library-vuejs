@@ -6,12 +6,8 @@
       </v-card-title>
       <v-card-subtitle>
         <v-form ref="form" v-model="valid">
-          <v-text-field
-            v-model="category.name"
-            label="Nombre de la categoría"
-            :rules="[rules.required]"
-            required
-          ></v-text-field>
+          <v-text-field v-model="category.name" label="Nombre de la categoría" :rules="[rules.required]"
+            required></v-text-field>
         </v-form>
       </v-card-subtitle>
       <v-card-actions>
@@ -25,7 +21,7 @@
 
 <script>
 import axios from 'axios';
-const apiBaseUrl = 'http://localhost:25365/api/';
+const apiBaseUrl = import.meta.env.VITE_BASE_URL;
 export default {
   props: {
     modelValue: Boolean,
@@ -40,8 +36,8 @@ export default {
         name: ''
       },
       rules: {
-        required: value => !!value || 'Requerido.'
-      }
+        required: (v) => !!v || 'Este campo es obligatorio',
+      },
     };
   },
   watch: {
@@ -57,7 +53,7 @@ export default {
       this.internalDialog = false;
     },
     async submitForm() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.category.name) {
         try {
           const values = {
             CategoryName: this.category.name

@@ -19,22 +19,23 @@
             accept=".pdf"></v-file-input>
 
           <v-text-field v-model="category" type="hidden"></v-text-field>
-
-          <v-btn type="submit" color="primary">Enviar</v-btn>
+          <div class="div-send">
+            <v-btn type="submit" color="primary" size="large">Enviar</v-btn>
+          </div>
         </v-form>
       </v-card-subtitle>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text @click="close">Cerrar</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import axios from 'axios';
-const apiBaseUrl = 'http://localhost:25365/api/';
+const apiBaseUrl = import.meta.env.VITE_BASE_URL;
+
 export default {
   props: ['catid', 'successAddBook'],
   setup(props) {
@@ -74,14 +75,14 @@ export default {
         }
 
         try {
-          const response = await axios.post(apiBaseUrl, formData, {
+          const response = await axios.post(`${apiBaseUrl}book`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
           props.successAddBook(props?.catid)
           console.log('Libro enviado:', response.data);
-          
+
         } catch (error) {
           console.error('Error al enviar el libro:', error);
         }
@@ -102,3 +103,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .div-send {
+    text-align: right;
+  }
+</style>

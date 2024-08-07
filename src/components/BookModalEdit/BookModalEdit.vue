@@ -20,12 +20,13 @@
 
           <v-text-field v-model="category" type="hidden"></v-text-field>
 
-          <v-btn type="submit" color="primary">Enviar</v-btn>
+          <div class="div-send">
+            <v-btn type="submit" color="primary" size="large">Enviar</v-btn>
+          </div>
         </v-form>
       </v-card-subtitle>
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn text @click="close">Cerrar</v-btn>
+
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -34,7 +35,7 @@
 <script>
 import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
-const apiBaseUrl = 'http://localhost:25365/api/';
+const apiBaseUrl = import.meta.env.VITE_BASE_URL;
 export default {
   props: ['objprops', 'successAddBook'],
   setup(props) {
@@ -76,7 +77,7 @@ export default {
         formData.append('BookDescription', bookDescription.value);
         formData.append('BookImage', 'test');
         formData.append('BookPdf', 'test');
-        formData.append('Category', category.value); 
+        formData.append('Category', category.value);
         console.log('#id.value', id.value)
 
         if (bookImageFile.value) {
@@ -87,14 +88,13 @@ export default {
         }
 
         try {
-          const response = await axios.put(apiBaseUrl + id.value, formData, {
+          const response = await axios.put(`${apiBaseUrl}book/${id.value}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
           props.successAddBook(category.value)
           console.log('Libro enviado:', response.data);
-          
         } catch (error) {
           console.error('Error al enviar el libro:', error);
         }
@@ -114,3 +114,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+  .div-send {
+    text-align: right;
+  }
+</style>
