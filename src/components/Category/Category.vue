@@ -1,23 +1,29 @@
 <template>
   <v-col cols="auto" class="div-add-cat">
-    <v-btn class="text-none text-subtitle-1" color="#5865f2" size="small" variant="flat" @click="handleShowModal(true)">
+    <v-btn class="text-none text-subtitle-1" color="#5865f2" size="x-large" variant="flat"
+      @click="handleShowModal(true)">
       Agregar Categoria <v-icon dark>mdi-plus</v-icon>
     </v-btn>
   </v-col>
 
   <v-expansion-panels variant="accordion">
-    <v-expansion-panel v-for="cat in categories" :key="cat.categoryId">
+    <v-expansion-panel v-for="cat in categories" :key="cat.categoryId" class="expansion-custom">
       <v-expansion-panel-title @click="handleGetBooks(cat.categoryId)">
-        <h3>{{ cat.categoryName }}</h3>
+        <h1>{{ cat.categoryName }}</h1>
 
       </v-expansion-panel-title>
       <v-expansion-panel-text>
-        <v-btn class="text-none text-subtitle-1" color="#5865f2" size="small" variant="flat"
-          @click="handleShowModalAddBook(cat.categoryId)">
-          Agregar libro <v-icon dark>mdi-plus</v-icon>
-        </v-btn>
+        <div class="div-add-book">
+          <v-btn class="text-none text-subtitle-1" color="#5865f2" size="large" variant="flat"
+            @click="handleShowModalAddBook(cat.categoryId)">
+            Agregar libro <v-icon dark>mdi-plus</v-icon>
+          </v-btn>
+        </div>
         <v-expansion-panel-content>
-          <v-data-table :headers="headers" :items="items">
+          <v-data-table :headers="headers" :items="items" class="table-custom-styles">
+            <template v-slot:[`item.title`]="{ item }">
+              <h2>{{ item.bookName }}</h2>
+            </template>
             <template v-slot:[`item.image`]="{ item }">
               <v-img :src="item.bookImage" max-width="100" />
             </template>
@@ -61,44 +67,12 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { ca } from 'vuetify/locale';
-const apiBaseUrl = 'http://localhost:25365/api/';
+import axios from '../../axios';
 
-const categories = ref([
-  {
-    "categoryId": 1,
-    "categoryGuid": "73279921-434d-4f03-8d39-289b15d350fe",
-    "categoryName": "Syfy",
-    "books": null
-  },
-  {
-    "categoryId": 2,
-    "categoryGuid": "9d7e55c5-b39d-4fb9-959a-08c5c3474911",
-    "categoryName": "Comedia",
-    "books": null
-  }
-]);
+const categories = ref([]);
 
 //const items = ref([]);
-const items = ref([
-  {
-    "bookId": 4,
-    "bookName": "Interestelar",
-    "bookDescription": "Esta es una descripción del libro",
-    "bookImage": "https://i0.wp.com/ensedeciencia.com/wp-content/uploads/2023/05/Copia-de-EdeCiencia-Mexw-C-P-2023-05-02T210102.389.jpg?resize=800%2C451&ssl=1",
-    "bookPdf": "C:\\Users\\Usuario\\Documents\\projects\\files-exam\\catalogo_red_de_herrajes.pdf",
-    "category": 1
-  },
-  {
-    "bookId": 5,
-    "bookName": "Star Wars",
-    "bookDescription": "Esta es una descripción del libro",
-    "bookImage": "https://i.blogs.es/1da08b/1366_2000-9-/1366_2000.jpeg",
-    "bookPdf": "C:\\Users\\Usuario\\Documents\\projects\\files-exam\\catalogo_red_de_herrajes.pdf",
-    "category": 1
-  }
-]);
+const items = ref([]);
 
 const headers = ref([
   { title: 'Libro', value: 'bookName', key: 'title', },
@@ -142,7 +116,7 @@ const successAddBook = (id) => {
 
 const handleDeleteCategory = async (id) => {
   try {
-    await axios.delete(`${apiBaseUrl}category/${id}`);
+    await axios.delete(`category/${id}`);
     await fetchCategories();
   } catch (error) {
     console.error('Error al enviar el formulario:', error);
@@ -152,7 +126,7 @@ const handleDeleteCategory = async (id) => {
 const handleGetBooks = async (id) => {
   catid.value = id;
   try {
-    const response = await axios.get(`${apiBaseUrl}book/${id}`);
+    const response = await axios.get(`book/${id}`);
     items.value = response?.data;
   } catch (error) {
     console.error('Error al enviar el formulario:', error);
@@ -161,23 +135,22 @@ const handleGetBooks = async (id) => {
 
 const handleDeleteBook = async (item, cat) => {
   try {
-    await axios.delete(`${apiBaseUrl}book/${item}`);
+    await axios.delete(`book/${item}`);
     await handleGetBooks(cat);
   } catch (error) {
     console.error('Error al enviar el formulario:', error);
   }
 }
 
-const handleEditBook = (id) => {
-  objprops.value = { ...id };
+const handleEditBook = (item) => { 
+  objprops.value = { ...item };
   //bookid.value = id;
-  localStorage.setItem('bookid', bookid);
   modalEditBookVisible.value = true
 }
 
 const fetchCategories = async () => {
   try {
-    const response = await axios.get(`${apiBaseUrl}category/`);
+    const response = await axios.get(`category/`);
     categories.value = response.data;
   } catch (error) {
     console.error('Error fetching categories:', error);
@@ -200,5 +173,20 @@ onMounted(() => {
 .div-delete {
   text-align: right;
   padding: 20px;
+}
+
+.expansion-custom {
+  padding: 20px;
+  background: #eee;
+}
+
+.table-custom-styles {
+  box-shadow: 10px 10px 17px -10px rgba(0, 0, 0, 0.75);
+  border: 1px solid #dbdada;
+  border-radius: 10px;
+}
+.div-add-book{
+  text-align: right;
+  margin-bottom: 20px;
 }
 </style>

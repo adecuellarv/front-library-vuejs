@@ -6,12 +6,8 @@
       </v-card-title>
       <v-card-subtitle>
         <v-form ref="form" v-model="valid">
-          <v-text-field
-            v-model="category.name"
-            label="Nombre de la categoría"
-            :rules="[rules.required]"
-            required
-          ></v-text-field>
+          <v-text-field v-model="category.name" label="Nombre de la categoría" :rules="[rules.required, rules.minLength, rules.maxLength]"
+            required></v-text-field>
         </v-form>
       </v-card-subtitle>
       <v-card-actions>
@@ -24,8 +20,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-const apiBaseUrl = 'http://localhost:25365/api/';
+import axios from '../../axios';
 export default {
   props: {
     modelValue: Boolean,
@@ -40,8 +35,10 @@ export default {
         name: ''
       },
       rules: {
-        required: value => !!value || 'Requerido.'
-      }
+        required: (v) => !!v || 'Este campo es obligatorio',
+        minLength: v => v.length >= 3 || 'Mínimo 3 caracteres',
+        maxLength: v => v.length <= 10 || 'Máximo 10 caracteres',
+      },
     };
   },
   watch: {
@@ -57,12 +54,12 @@ export default {
       this.internalDialog = false;
     },
     async submitForm() {
-      if (this.$refs.form.validate()) {
+      if (this.$refs.form.validate() && this.category.name) {
         try {
           const values = {
             CategoryName: this.category.name
           }
-          await axios.post(`${apiBaseUrl}category/`, values);
+          await axios.post(`category/`, values);
           //await fetchCategories();
           this.close();
           this.$emit('form-submitted');
