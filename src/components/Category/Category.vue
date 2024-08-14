@@ -143,10 +143,9 @@ const handleDeleteBook = async (item, cat) => {
   }
 }
 
-const handleEditBook = (id) => {
-  objprops.value = { ...id };
+const handleEditBook = (item) => { 
+  objprops.value = { ...item };
   //bookid.value = id;
-  localStorage.setItem('bookid', bookid);
   modalEditBookVisible.value = true
 }
 

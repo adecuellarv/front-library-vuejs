@@ -6,7 +6,7 @@
       </v-card-title>
       <v-card-subtitle>
         <v-form ref="form" v-model="valid">
-          <v-text-field v-model="category.name" label="Nombre de la categoría" :rules="[rules.required]"
+          <v-text-field v-model="category.name" label="Nombre de la categoría" :rules="[rules.required, rules.minLength, rules.maxLength]"
             required></v-text-field>
         </v-form>
       </v-card-subtitle>
@@ -37,6 +37,8 @@ export default {
       },
       rules: {
         required: (v) => !!v || 'Este campo es obligatorio',
+        minLength: v => v.length >= 3 || 'Mínimo 3 caracteres',
+        maxLength: v => v.length <= 10 || 'Máximo 10 caracteres',
       },
     };
   },
