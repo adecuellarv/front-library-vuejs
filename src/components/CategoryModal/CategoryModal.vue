@@ -20,8 +20,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-const apiBaseUrl = import.meta.env.VITE_BASE_URL;
+import axios from '../../axios';
 export default {
   props: {
     modelValue: Boolean,
@@ -60,7 +59,7 @@ export default {
           const values = {
             CategoryName: this.category.name
           }
-          await axios.post(`${apiBaseUrl}category/`, values);
+          await axios.post(`category/`, values);
           //await fetchCategories();
           this.close();
           this.$emit('form-submitted');

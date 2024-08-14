@@ -34,8 +34,7 @@
 
 <script>
 import { ref } from 'vue';
-import axios from 'axios';
-const apiBaseUrl = import.meta.env.VITE_BASE_URL;
+import axios from '../../axios';
 
 export default {
   props: ['catid', 'successAddBook'],
@@ -89,7 +88,7 @@ export default {
         }
 
         try {
-          const response = await axios.post(`${apiBaseUrl}book`, formData, {
+          const response = await axios.post(`book`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },

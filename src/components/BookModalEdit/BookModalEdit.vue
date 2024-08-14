@@ -14,10 +14,10 @@
 
 
           <v-file-input label="Cargar Imagen del Libro" @change="handleFileUpload('image', $event)"
-            accept="image/*"></v-file-input>
+            accept="image/*" :rules="[rules.required, rules.imageUploaded, rules.maxFileSize(10)]"></v-file-input>
 
           <v-file-input label="Cargar PDF del Libro" @change="handleFileUpload('pdf', $event)"
-            accept=".pdf"></v-file-input>
+            accept=".pdf" :rules="[rules.required, rules.pdfUploaded, rules.maxFileSize(20)]" ></v-file-input>
 
           <v-text-field v-model="CategoryId" type="hidden"></v-text-field>
 
@@ -35,8 +35,7 @@
 
 <script>
 import { ref, onMounted, watch } from 'vue';
-import axios from 'axios';
-const apiBaseUrl = import.meta.env.VITE_BASE_URL;
+import axios from '../../axios';
 export default {
   props: ['objprops', 'successAddBook'],
   setup(props) {
@@ -55,7 +54,13 @@ export default {
       bookNameMaxLength: v => v.length <= 20 || 'No puede exceder 20 caracteres',
       bookDescriptionMinLength: v => v.length >= 3 || 'Debe tener al menos 3 caracteres',
       bookDescriptionMaxLength: v => v.length <= 50 || 'No puede exceder 50 caracteres',
-
+      maxFileSize: maxMB => v => {
+        if (!v || v.length === 0) return true;
+        const file = v[0]; 
+        if (!(file instanceof File)) return true;
+        const fileSizeMB = file.size / (1024 * 1024);
+        return fileSizeMB <= maxMB || `El archivo no puede exceder ${maxMB} MB`;
+      },
     };
 
     watch(() => props.objprops, (newVal) => {
@@ -94,7 +99,7 @@ export default {
         }
 
         try {
-          const response = await axios.put(`${apiBaseUrl}book/${id.value}`, formData, {
+          const response = await axios.put(`book/${id.value}`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },

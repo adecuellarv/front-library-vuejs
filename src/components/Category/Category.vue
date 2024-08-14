@@ -67,8 +67,7 @@
 </template>
 <script setup>
 import { ref, onMounted } from 'vue';
-import axios from 'axios';
-const apiBaseUrl = import.meta.env.VITE_BASE_URL;
+import axios from '../../axios';
 
 const categories = ref([]);
 
@@ -117,7 +116,7 @@ const successAddBook = (id) => {
 
 const handleDeleteCategory = async (id) => {
   try {
-    await axios.delete(`${apiBaseUrl}category/${id}`);
+    await axios.delete(`category/${id}`);
     await fetchCategories();
   } catch (error) {
     console.error('Error al enviar el formulario:', error);
@@ -127,7 +126,7 @@ const handleDeleteCategory = async (id) => {
 const handleGetBooks = async (id) => {
   catid.value = id;
   try {
-    const response = await axios.get(`${apiBaseUrl}book/${id}`);
+    const response = await axios.get(`book/${id}`);
     items.value = response?.data;
   } catch (error) {
     console.error('Error al enviar el formulario:', error);
@@ -136,7 +135,7 @@ const handleGetBooks = async (id) => {
 
 const handleDeleteBook = async (item, cat) => {
   try {
-    await axios.delete(`${apiBaseUrl}book/${item}`);
+    await axios.delete(`book/${item}`);
     await handleGetBooks(cat);
   } catch (error) {
     console.error('Error al enviar el formulario:', error);
@@ -151,7 +150,7 @@ const handleEditBook = (item) => {
 
 const fetchCategories = async () => {
   try {
-    const response = await axios.get(`${apiBaseUrl}category/`);
+    const response = await axios.get(`category/`);
     categories.value = response.data;
   } catch (error) {
     console.error('Error fetching categories:', error);
